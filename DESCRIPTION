@@ -1,0 +1,17 @@
+Package: InteGRAPE
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Konstantinos Bogias
+Maintainer: Konstantinos Bogias <konstantinos.bogias@student.adelaide.edu.au>
+Description: Integration of gene expression and methylation data of Vitis vinifera, using a shiny app.
+License: LGPL (>=2)
+Encoding: UTF-8
+Imports: 
+  dplyr,
+  edgeR,
+  limma,
+  magrittr,
+  tibble
+LazyData: true
+RoxygenNote: 6.0.1
