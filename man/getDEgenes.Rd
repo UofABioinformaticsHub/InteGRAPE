@@ -17,7 +17,7 @@ getDEgenes(DGElist, variable, metadata)
 A character vector of differentially expressed genes.
 }
 \description{
-Retrieve a character vector with a list of differentially expressed genes
+Retrieve a character vector with a list of differentially expressed genes (should have ENSEMBL IDs)
 }
 \details{
 This function works in a similar way to that of the `getAllGenes` function in that its fitting a linear model to the gene expression data. Then it runs the `topTable` function and retrieves the genes from that data set, ordered by p value.
