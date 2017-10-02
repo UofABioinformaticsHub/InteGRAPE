@@ -121,8 +121,9 @@ getDMgenes <- function(DGElist, variable, metadata, allGenes, SeqInfo) {
                                             seqinfo = SeqInfo,
                                             keep.extra.columns = TRUE,
                                             starts.in.df.are.0based = FALSE)
+  PromotersVitisGR <- promoters(VitisGR, upstream = 5000, downstream = 5000)
 
-  dmGenesGR <- subsetByOverlaps(GeneExprGR, MethylationGR)
+  dmGenesGR <- subsetByOverlaps(PromotersVitisGR, MethylationGR)
   dmGenes <- as_data_frame(dmGenesGR)
 
   dm <- dmGenes$GeneID
