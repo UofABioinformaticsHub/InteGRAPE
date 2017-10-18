@@ -1,4 +1,6 @@
-
+#' @title Run Fisher's Method to combine p values
+#' 
+#' @description Fisher's Method combines p values from different statistical models.
 FishersMethod <- function(GOde, GOdm) {
   
   # GOdm$P.DM <- GOdm$P.DE
