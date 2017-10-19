@@ -4,12 +4,14 @@
 \alias{plot_MDS}
 \title{Multi-dimensional scaling of samples}
 \usage{
-plot_MDS(DGElist, designMatrix, size = 80)
+plot_MDS(DGElist, variable, metadata, size = 80)
 }
 \arguments{
 \item{DGElist}{An object of class `DGElist`, conatining information about counts and samples}
 
-\item{designMatrix}{A model matrix that is the output of the `getDesignMatrix` function}
+\item{variable}{A character string of the variable under investigation, should be found in the metadata}
+
+\item{metadata}{A data frame containing a set of variables and information relating to them}
 
 \item{size}{Alter the size of the points, 80 is the standard default size}
 }

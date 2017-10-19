@@ -5,13 +5,15 @@
 #' @details A multi-dimensional scaling plots clusters the data in an unsuperivsed manner, meaning the data input isn't trained with an expected outcome. An example of a method using a trained data set is a Principle Component Analysis. Multi-dimensional scaling is an efficient way to try and observe if there is any differences between samples before executing any formal analyses.
 #'
 #' @param DGElist An object of class `DGElist`, conatining information about counts and samples
-#' @param designMatrix A model matrix that is the output of the `getDesignMatrix` function
+#' @param variable A character string of the variable under investigation, should be found in the metadata
+#' @param metadata A data frame containing a set of variables and information relating to them
 #' @param size Alter the size of the points, 80 is the standard default size
 #'
 #' @export
 #'
-plot_MDS <- function(DGElist, designMatrix, size = 80) {
+plot_MDS <- function(DGElist, variable, metadata, size = 80) {
 
+  designMatrix <- getDesignMatrix(variable, metadata)
 
   voomResult <- limma::voom(DGElist, designMatrix, plot = FALSE)
 
