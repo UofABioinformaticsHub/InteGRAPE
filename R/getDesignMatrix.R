@@ -17,7 +17,7 @@
 getDesignMatrix <- function(variable, metadata) {
 
   numericVar <- is.numeric(metadata[[variable]])
-  int <- if_else(numericVar, 1, 0)
+  int <- dplyr::if_else(numericVar, 1, 0)
   designMatrix <- as.formula(paste("~", paste(int, variable, sep = "+"))) %>%
     model.matrix(data = metadata)
   designMatrix
