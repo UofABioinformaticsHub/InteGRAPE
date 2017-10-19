@@ -33,14 +33,14 @@ getScaledCPM <- function(DGElist, designMartix, nGenes = 30) {
 
   ### Fit gene expression to linear model using lmFit
 
-  fitGeneExpr <- voom(DGElist, designMatrix, plot = FALSE) %>%
-    lmFit(design = designMatrix) %>%
-    eBayes()
+  fitGeneExpr <- limma::voom(DGElist, designMatrix, plot = FALSE) %>%
+    limma::lmFit(design = designMatrix) %>%
+    limma::eBayes()
   nGenesTotal <- nrow(fitGeneExpr)
   slopeContrast <- colnames(fitGeneExpr$design)[2]
-  topGenes <- topTable(fitGeneExpr,
+  topGenes <- limma::topTable(fitGeneExpr,
                        coef = slopeContrast, number = nGenesTotal) %>%
-    rownames_to_column("GeneID")
+    tibble::rownames_to_column("GeneID")
 
 
   ## Define gene and sample order to subset for in the topGenes object
@@ -49,7 +49,7 @@ getScaledCPM <- function(DGElist, designMartix, nGenes = 30) {
 
   GeneOrder <- order(topGenes$GeneID)
   topGenes <- topGenes[GeneOrder, ] %>%
-    as_data_frame()
+    tibble::as_data_frame()
 
 
   ### Select only for FDR and gene names
@@ -60,7 +60,7 @@ getScaledCPM <- function(DGElist, designMartix, nGenes = 30) {
   ## Retireve Gene IDs for all samples
   #First we want to get the gene names and FDR for all of the samples, this way we can make an FDR bar that will give a colour indication of the FDRcutoff
 
-  topGenesTotal <- rownames(topTable(fitGeneExpr, coef = slopeContrast, number = nGenesTotal))
+  topGenesTotal <- rownames(limma::topTable(fitGeneExpr, coef = slopeContrast, number = nGenesTotal))
   inputValsTotal <- metadata[[currentVar]]
   sampleOrderTotal <- order(inputValsTotal)
   #inputVals <- inputVals[sampleOrder]
@@ -94,12 +94,12 @@ getScaledCPM <- function(DGElist, designMartix, nGenes = 30) {
   ### Generate CPM dataframe
 
   nGenes <- nGenes
-  topGenes <- topTable(fitGeneExpr, coef = slopeContrast, number = nGenes)
-  topGenes <- rownames_to_column(topGenes, "GeneID")
+  topGenes <- limma::topTable(fitGeneExpr, coef = slopeContrast, number = nGenes)
+  topGenes <- tibble::rownames_to_column(topGenes, "GeneID")
 
   #inputVals <- inputVals[sampleOrder]
 
-  topGenes_names <- rownames(topTable(fitGeneExpr, coef = slopeContrast, number = nGenes))
+  topGenes_names <- rownames(limma::topTable(fitGeneExpr, coef = slopeContrast, number = nGenes))
   inputVals <- metadata[[currentVar]]
   sampleOrder <- order(inputVals)
 
@@ -131,7 +131,7 @@ getScaledCPM <- function(DGElist, designMartix, nGenes = 30) {
   GeneOrder <- data.frame(GeneOrder, 1)
   rownames(GeneOrder) <- GeneOrder$GeneOrder
   colnames(GeneOrder) <- c("GeneID", "boo")
-  geneExprPVal <- left_join(GeneOrder, geneExprPVal, by = "GeneID")
+  geneExprPVal <- dplyr::left_join(GeneOrder, geneExprPVal, by = "GeneID")
   geneExprPVal$boo <- NULL
   geneExprPVal$booo <- NULL
 

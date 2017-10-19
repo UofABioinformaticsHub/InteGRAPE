@@ -35,13 +35,13 @@ bad <- sub("*", "chr", bad) %>% c("chrUn")
 
 GeneExprPositions <- GeneExprPositions[!(GeneExprPositions$Chromosome %in% bad),]
 
-GeneExprPval <- left_join(GeneExprPositions, GeneExprPval, by = "GeneID")
+GeneExprPval <- dplyr::left_join(GeneExprPositions, GeneExprPval, by = "GeneID")
 
 GeneExprPval$Chromosome <- GeneExprPval$Chromosome %>% as.factor()
 
 
 
-GeneExprGR <- makeGRangesFromDataFrame(GeneExprPval,
+GeneExprGR <- GenomicRanges::makeGRangesFromDataFrame(GeneExprPval,
                                        ignore.strand = TRUE,
                                        seqnames.field = "Chromosome",
                                        start.field = "start",
@@ -58,7 +58,7 @@ GeneExprGR <- makeGRangesFromDataFrame(GeneExprPval,
 Chr <- Chromosome
 
 GeneExprChrGR <- GeneExprGR[seqnames(GeneExprGR) == Chr]
-GeneExprChrGR_df <- as_data_frame(GeneExprChrGR)
+GeneExprChrGR_df <- tibble::as_data_frame(GeneExprChrGR)
 
 yaxis <- round(abs(seq(from = max(-log10(GeneExprChrGR_df$PValue)), to = min(log10(MethylChrGR_df$PValue)), length.out = 10)), 0)
 
@@ -84,18 +84,18 @@ all_valuesG <- function(x) {
 }
 
 manhattanPlotDGE <- GeneExprChrGR_df %>%
-  ggvis(x = ~start, y = ~-log10(PValue), fill := "darkblue", key := ~id) %>%
-  layer_points() %>%
-  add_axis("x",
+  ggvis::ggvis(x = ~start, y = ~-log10(PValue), fill := "darkblue", key := ~id) %>%
+  ggvis::layer_points() %>%
+  ggvis::add_axis("x",
            title = paste("Position on", Chr),
            orient = "bottom") %>%
-  add_axis("y",
+  ggvis::add_axis("y",
            title = paste("-log10 of p value"),
            values = genyax,
            orient = "left")
 manhattanPlotDGE %>%
-  layer_lines(y = cut_offG, stroke := "red") %>%
-  add_tooltip(all_valuesG, "hover")
+  ggvis::layer_lines(y = cut_offG, stroke := "red") %>%
+  ggvis::add_tooltip(all_valuesG, "hover")
 
 manhattanPlotDGE
 

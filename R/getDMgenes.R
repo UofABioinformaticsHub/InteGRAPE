@@ -58,10 +58,10 @@ getDMgenes <- function(DGElist, designMatrix, allGenes, SeqInfo) {
   bad <- sub("*", "chr", bad) %>% c("chrUn")
 
   GeneExprPositions <- GeneExprPositions[!(GeneExprPositions$Chromosome %in% bad),]
-  GeneExprPval <- left_join(GeneExprPositions, GeneExprPval, by = "GeneID")
+  GeneExprPval <- dplyr::left_join(GeneExprPositions, GeneExprPval, by = "GeneID")
   GeneExprPval$Chromosome <- GeneExprPval$Chromosome %>% as.factor()
 
-  GeneExprGR <- makeGRangesFromDataFrame(GeneExprPval,
+  GeneExprGR <- GenomicRanges::makeGRangesFromDataFrame(GeneExprPval,
                                          ignore.strand = TRUE,
                                          seqnames.field = "Chromosome",
                                          start.field = "start",
@@ -73,12 +73,12 @@ getDMgenes <- function(DGElist, designMatrix, allGenes, SeqInfo) {
 
 
   # Fit the data to liner model
-  fit <- glmFit(DGElist, designMatrix)
+  fit <- edgeR::glmFit(DGElist, designMatrix)
 
-  lrt <- glmLRT(fit, coef = colnames(designMatrix)[2])
+  lrt <- edgeR::glmLRT(fit, coef = colnames(designMatrix)[2])
 
   # Get the top Tags for the data
-  lrt_top <- topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
+  lrt_top <- edgeR::topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
 
   # Check how many statistically significant sites there are
   summary(lrt_top$table$PValue <= 0.05)
@@ -93,15 +93,15 @@ getDMgenes <- function(DGElist, designMatrix, allGenes, SeqInfo) {
 
     dmGenes <- dmGenes$table
 
-    dmGenes <- rownames_to_column(dmGenes)
+    dmGenes <- tibble::rownames_to_column(dmGenes)
 
-    dmGenes <- separate(dmGenes,
+    dmGenes <- tidyr::separate(dmGenes,
                         rowname,
                         c("Chromosome", "Position", "Strand"), "\\:")
-    dmGenes <- separate(dmGenes,
+    dmGenes <- tidyr::separate(dmGenes,
                         Position,
                         c("start", "end"), "\\-")
-    dmGenes <- as.tibble(dmGenes)
+    dmGenes <- tibble::as.tibble(dmGenes)
 
     dmGenes$Chromosome <- dmGenes$Chromosome %>% as.factor()
 
@@ -110,7 +110,7 @@ getDMgenes <- function(DGElist, designMatrix, allGenes, SeqInfo) {
 
   dmGenes <- getDiffMeth(dm = dm, top = lrt_top)
 
-  MethylationGR <- makeGRangesFromDataFrame(dmGenes,
+  MethylationGR <- GenomicRanges::makeGRangesFromDataFrame(dmGenes,
                                             ignore.strand = TRUE,
                                             seqnames.field = "Chromosome",
                                             start.field = "start",
@@ -118,10 +118,10 @@ getDMgenes <- function(DGElist, designMatrix, allGenes, SeqInfo) {
                                             seqinfo = SeqInfo,
                                             keep.extra.columns = TRUE,
                                             starts.in.df.are.0based = FALSE)
-  PromotersVitisGR <- promoters(VitisGR, upstream = 5000, downstream = 5000)
+  PromotersVitisGR <- GenomicRanges::promoters(VitisGR, upstream = 5000, downstream = 5000)
 
-  dmGenesGR <- subsetByOverlaps(PromotersVitisGR, MethylationGR)
-  dmGenes <- as_data_frame(dmGenesGR)
+  dmGenesGR <- IRanges::subsetByOverlaps(PromotersVitisGR, MethylationGR)
+  dmGenes <- tibble::as_data_frame(dmGenesGR)
 
   dm <- dmGenes$GeneID
   dm

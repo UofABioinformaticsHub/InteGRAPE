@@ -15,10 +15,10 @@
 
 plotVariableGO <- function(DGE_RNAseq, DGE_SubsetMethylation, appmetaG, appmetaM, variable, VvSeqInfo, EG.GO) {
 
-  source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/getDEgenes.R")
-  source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/getDMgenes.R")
-  source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/getGOenrichment.R")
-  source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/plotGOterms.R")
+  # source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/getDEgenes.R")
+  # source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/getDMgenes.R")
+  # source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/getGOenrichment.R")
+  # source("~/R/R projects/Grapevine_data/Grapevine_Data_Analysis/R_files/R_code/Scripts/plotGOterms.R")
 
 
   de <- getDEgenes(DGElist = DGE_RNAseq, variable = variable, metadata = appmetaG)

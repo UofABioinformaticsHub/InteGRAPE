@@ -12,10 +12,10 @@
 getTopMethylation <- function(DGElist, designMatrix) {
 
   # Fit the data to liner model
-  fit <- glmFit(DGElist, designMatrix)
+  fit <- edgeR::glmFit(DGElist, designMatrix)
 
-  lrt <- glmLRT(fit, coef = colnames(designMatrix)[2])
+  lrt <- edgeR::glmLRT(fit, coef = colnames(designMatrix)[2])
 
   # Get the top Tags for the data
-  lrt_top <- topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
+  lrt_top <- edgeR::topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
 }

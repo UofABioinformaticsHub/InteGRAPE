@@ -34,7 +34,7 @@ plotGOterms <- function(de, dm, EG.GO) {
   GOdm$P.DM <- GOdm$P.DE
   GOdm$P.DE <- NULL
 
-GO_Combined <- left_join(GOdm, GOde, by = c("Term", "Ont", "N"))
+GO_Combined <- dplyr::left_join(GOdm, GOde, by = c("Term", "Ont", "N"))
 
 GO_Combined$id <- 1:nrow(GO_Combined)
 
@@ -45,13 +45,13 @@ all_valuesGO <- function(x) {
 }
 
 GOplot <- GO_Combined %>%
-  ggvis(x = ~-log10(P.DM), y = ~-log10(P.DE), key := ~id) %>%
-  layer_points(fill := "blue")
+  ggvis::ggvis(x = ~-log10(P.DM), y = ~-log10(P.DE), key := ~id) %>%
+  ggvis::layer_points(fill := "blue")
 
 GOplot %>%
-  layer_lines(x = ~-log10(0.05), stroke := "red", strokeWidth := 2) %>%
-  layer_lines(y = ~-log10(0.05), stroke := "red", strokeWidth := 2) %>%
-  add_tooltip(all_valuesGO, "click")
+  ggvis::layer_lines(x = ~-log10(0.05), stroke := "red", strokeWidth := 2) %>%
+  ggvis::layer_lines(y = ~-log10(0.05), stroke := "red", strokeWidth := 2) %>%
+  ggvis::add_tooltip(all_valuesGO, "click")
 }
 
 #plotGOterms(GOdm = GOdm, GOde = GOde)

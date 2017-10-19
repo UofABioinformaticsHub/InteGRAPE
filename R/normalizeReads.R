@@ -19,7 +19,7 @@ normalizeReads <- function(DGElist) {
   title(main = "Unnormalised data", ylab = "Log-cpm")
 
   # Calculate Normal Factors, this is the normalisation step
-  DGElist <- calcNormFactors(
+  DGElist <- edgeR::calcNormFactors(
     DGElist,
     method = "TMM"
   )

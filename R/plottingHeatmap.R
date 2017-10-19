@@ -35,7 +35,7 @@ plottingHeatmap <- function(ScaledCPM, variable, metadata) {
   PValpalette <- grDevices::colorRampPalette(c("green", "light green", "yellow", "pink", "red", "dark red"))(nColoursPVal)
   PValcolours <- PValpalette[PValpositions]
 
-  heatmapColours <- colorRampPalette(c("dark blue", "blue", "cyan", "white", "pink", "red", "dark red"))(540)
+  heatmapColours <- grDevices::colorRampPalette(c("dark blue", "blue", "cyan", "white", "pink", "red", "dark red"))(540)
 
   ## Create colour bars
   ### Create data for colour bar
@@ -60,14 +60,14 @@ plottingHeatmap <- function(ScaledCPM, variable, metadata) {
 
   a <- 1:101
   b <- 1
-  c <- data_frame(a, b)
+  c <- tibble::data_frame(a, b)
 
 
   ### Create data for FDR bar title
 
   texta <- 1
   textb <- 1
-  text <- data_frame(texta, textb)
+  text <- tibble::data_frame(texta, textb)
 
 
   ### Make data for variables ordered

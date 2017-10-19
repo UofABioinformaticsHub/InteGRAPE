@@ -13,12 +13,12 @@
 plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1") {
 
   # Fit the data to liner model
-  fit <- glmFit(DGElist, designMatrix)
+  fit <- edgeR::glmFit(DGElist, designMatrix)
 
-  lrt <- glmLRT(fit, coef = colnames(designMatrix)[2])
+  lrt <- edgeR::glmLRT(fit, coef = colnames(designMatrix)[2])
 
   # Get the top Tags for the data
-  lrt_top <- topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
+  lrt_top <- edgeR::topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
 
   # colnames(lrt_top$table)[1] <- "site"
   # rownames(lrt_top$table) <- NULL
@@ -44,20 +44,20 @@ plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1
   ## Adjust column names
   ## Separate the methylation position info
 
-  MethylPval <- rownames_to_column(MethylPval)
+  MethylPval <- tibble::rownames_to_column(MethylPval)
 
-  MethylPval <- separate(MethylPval, rowname, c("Chromosome", "Position", "Strand"), "\\:")
+  MethylPval <- tidyr::separate(MethylPval, rowname, c("Chromosome", "Position", "Strand"), "\\:")
 
-  MethylPvalsep <- separate(MethylPval, Position, c("start", "end"), "\\-")
+  MethylPvalsep <- tidyr::separate(MethylPval, Position, c("start", "end"), "\\-")
 
-  MethylPval <- as.tibble(MethylPvalsep)
+  MethylPval <- tibble::as.tibble(MethylPvalsep)
 
 
 
   MethylPvalsep$Chromosome <- MethylPval$Chromosome %>% as.factor()
 
 
-  MethylationGR <- makeGRangesFromDataFrame(MethylPvalsep,
+  MethylationGR <- GenomicRanges::makeGRangesFromDataFrame(MethylPvalsep,
                                             ignore.strand = TRUE,
                                             seqnames.field = "Chromosome",
                                             start.field = "start",
@@ -74,7 +74,7 @@ plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1
   Chr <- Chromosome
 
   MethylChrGR <- MethylationGR[seqnames(MethylationGR) == Chr]
-  MethylChrGR_df <- as_data_frame(MethylChrGR)
+  MethylChrGR_df <- tibble::as_data_frame(MethylChrGR)
 
 
   ## Get y axis ready
@@ -100,18 +100,18 @@ plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1
 
 
   manhattanPlotDM <- MethylChrGR_df %>%
-    ggvis(x = ~start, y = ~-log10(PValue), fill := "darkred") %>%
-    layer_points() %>%
-    add_axis("x",
+    ggvis::ggvis(x = ~start, y = ~-log10(PValue), fill := "darkred") %>%
+    ggvis::layer_points() %>%
+    ggvis::add_axis("x",
              title = paste("Position on", Chr),
              orient = "bottom") %>%
-    add_axis("y",
+    ggvis::add_axis("y",
              title = paste("-log10 of p value"),
              values = methyax,
              orient = "left")
   manhattanPlotDM %>%
-    layer_lines(y = -log10(1.5*10e-6), stroke := "red") %>%
-    add_tooltip(all_valuesM, "hover")
+    ggvis::layer_lines(y = -log10(1.5*10e-6), stroke := "red") %>%
+    ggvis::add_tooltip(all_valuesM, "hover")
 
   manhattanPlotDM
 }

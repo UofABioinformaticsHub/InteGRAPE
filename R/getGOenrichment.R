@@ -62,11 +62,11 @@ getGOenrichment <- function(de, EG.GO) {
   nsets <- length(de)
 
   # Now we do some groovey stuff with the names of the de object
-  names(de) <- trimWhiteSpace(names(de))
+  names(de) <- limma::trimWhiteSpace(names(de))
   NAME <- names(de)
   i <- which(NAME == "" | is.na(NAME))
   NAME[i] <- paste0("DE", i)
-  names(de) <- makeUnique(NAME)
+  names(de) <- limma::makeUnique(NAME)
   #universe <- universe[!dup]
 
   # This finds the total number of the genes
