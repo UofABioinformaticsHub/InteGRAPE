@@ -1,6 +1,6 @@
 Package: InteGRAPE
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Integration-by-visualisation of differential gene expression and methylation data
 Version: 0.1.0
 Author: Konstantinos Bogias
 Maintainer: Konstantinos Bogias <konstantinos.bogias@student.adelaide.edu.au>
