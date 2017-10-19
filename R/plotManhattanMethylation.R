@@ -17,7 +17,7 @@ plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1
   # We now have the top genes and methylatin sites along with their p-values as a result of our previous code
   # First we should put these two into meaningful objects so we don't forget them
 
-  MethylPval <- lrt_top$table
+  MethylPval <- topMethylation$table
 
 
   ## Sort out unnecessary columns

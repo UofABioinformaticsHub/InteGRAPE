@@ -18,4 +18,6 @@ getTopMethylation <- function(DGElist, designMatrix) {
 
   # Get the top Tags for the data
   lrt_top <- edgeR::topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
+
+  lrt_top
 }
