@@ -1,4 +1,14 @@
-
+#' @title Plot gene positions with differential expression
+#'
+#' @description This function plots the results of a differential gene expression analysis within a Manhattan Plot.
+#'
+#' @details Plotting the information regarding postions of differentially expressed genes allows a whole genome view of gene expression and also makes possible a comparison by visualisation of sites with differential methylation.
+#'
+#' @param topGenes A dataframe output from the `getTopGenes` function
+#' @param SeqInfo An object of class `Seqinfo` containing information on the chromosomes within an organism
+#' @param Chromosome A character string containing the chromosome to plot, ie "chr1", "chr4", "chr13", etc.
+#'
+#' @export
 
 plotManhattanGeneExpr <- function(topGenes, SeqInfo, Chromosome = "chr1") {
 GeneExprPval <- topGenes
@@ -83,7 +93,7 @@ manhattanPlotDGE <- GeneExprChrGR_df %>%
            title = paste("-log10 of p value"),
            values = genyax,
            orient = "left")
-manhattanPlotDGE %>% 
+manhattanPlotDGE %>%
   layer_lines(y = cut_offG, stroke := "red") %>%
   add_tooltip(all_valuesG, "hover")
 

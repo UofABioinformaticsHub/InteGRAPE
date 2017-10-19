@@ -1,9 +1,16 @@
+#' @title Plot Methylation positions
+#'
+#' @description This function plots the results of a differential methylation analysis within a Manhattan Plot.
+#'
+#' @details Plotting the information regarding methylation positions allows a whole genome view of methylation and also makes possible a comparison by visualisation of sites for differential gene expression.
+#'
+#' @param topMethylation A dataframe contianing information on the significance of differential methylation sites, an output from the `getTopMethylation` function
+#' @param SeqInfo An object of class `Seqinfo` containing information on the chromosomes within an organism
+#' @param Chromosome A character string containing the chromosome to plot, ie "chr1", "chr4", "chr13", etc.
+#'
+#' @export
 
-plotManhattanMethylation <- function(DGElist, variable, metadata, SeqInfo, Chromosome = "chr1") {
-
-  numericVar <- is.numeric(metadata[[variable]])
-  int <- if_else(numericVar, 1, 0)
-  designMatrix <- as.formula(paste("~", paste(int, variable, sep = "+"))) %>% model.matrix(data = metadata)
+plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1") {
 
   # Fit the data to liner model
   fit <- glmFit(DGElist, designMatrix)
@@ -18,7 +25,7 @@ plotManhattanMethylation <- function(DGElist, variable, metadata, SeqInfo, Chrom
 
 
 
-  # - 
+  # -
   # P-value comparison
   # We now have the top genes and methylatin sites along with their p-values as a result of our previous code
   # First we should put these two into meaningful objects so we don't forget them
@@ -106,6 +113,6 @@ plotManhattanMethylation <- function(DGElist, variable, metadata, SeqInfo, Chrom
     layer_lines(y = -log10(1.5*10e-6), stroke := "red") %>%
     add_tooltip(all_valuesM, "hover")
 
-  manhattanPlotDM 
+  manhattanPlotDM
 }
 

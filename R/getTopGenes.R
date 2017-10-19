@@ -4,15 +4,14 @@
 #'
 #' @details This function fits a linear model to the gene expression data and retrieves a `topTable` output that has the genes sorted by p value
 #'
-#' @return This tells you what object it returns
+#' @return A dataframe containing information from the linear fit, ranking DE genes on significance
 #'
-#' @param DGElist describe this
-#' @param variable the variable of interest
-#' @param metadata describe
+#' @param DGElist An object of class `DGElist` containing information on gene counts and samples, typical output from the `limma` package
+#' @param designMartix A model matrix containing information on the metadata, an output from the `getDesignMatrix` function
 #'
 #' @export
 
-getTopGenes <- function(DGElist, variable, metadata) {
+getTopGenes <- function(DGElist, designMatrix) {
   library(edgeR)
   library(limma)
   library(magrittr)
@@ -34,12 +33,6 @@ getTopGenes <- function(DGElist, variable, metadata) {
     stop("metadata must be a data frame")
   }
 
-  numericVar <- is.numeric(metadata[[variable]])
-  int <- if_else(numericVar, 1, 0)
-
-
-  designMatrix <- as.formula(paste("~", paste(int, variable, sep = "+"))) %>%
-    model.matrix(data = metadata)
   fitGeneExpr <- voom(DGElist, designMatrix, plot = FALSE) %>%
     lmFit(design = designMatrix) %>%
     eBayes()

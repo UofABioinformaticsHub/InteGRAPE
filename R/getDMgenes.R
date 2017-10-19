@@ -8,13 +8,12 @@
 #' @return A character vector of differentially expressed genes.
 #'
 #' @param DGElist A DGElist output from `limma`
-#' @param variable The variable of interest
-#' @param metadata A dataframe with different variables on the x axis and samples on the y axis.
+#' @param designMatrix A model matrix that is the output of the `getDesignMatrix` function
 #' @param allGenes An output with the `topTable` from the `getAllGenes` function
 #' @param SeqInfo A SeqInfo object containing genomic information on your species of interest. Can either find one on ENSEMBL or create one from an object using `seqinfo` https://www.rdocumentation.org/packages/GenomeInfoDb/versions/1.8.3/topics/seqinfo
 #'
 #' @export
-getDMgenes <- function(DGElist, variable, metadata, allGenes, SeqInfo) {
+getDMgenes <- function(DGElist, designMatrix, allGenes, SeqInfo) {
 
   require(magrittr)
   require(readr)
@@ -71,9 +70,7 @@ getDMgenes <- function(DGElist, variable, metadata, allGenes, SeqInfo) {
                                          keep.extra.columns = TRUE,
                                          starts.in.df.are.0based = FALSE)
 
-  numericVar <- is.numeric(metadata[[variable]])
-  int <- if_else(numericVar, 1, 0)
-  designMatrix <- as.formula(paste("~", paste(int, variable, sep = "+"))) %>% model.matrix(data = metadata)
+
 
   # Fit the data to liner model
   fit <- glmFit(DGElist, designMatrix)

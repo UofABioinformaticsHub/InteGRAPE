@@ -4,16 +4,14 @@
 \alias{getScaledCPM}
 \title{Retrieve scaled counts per million}
 \usage{
-getScaledCPM(DGElist, variable, metadata, nGenes = 30)
+getScaledCPM(DGElist, designMartix, nGenes = 30)
 }
 \arguments{
 \item{DGElist}{A DGElist containing the count and sampling data}
 
-\item{variable}{The selected variable of interest, should be a character string or vector.}
-
-\item{metadata}{A dataframe with different variables on the x axis and samples on the y axis.}
-
 \item{nGenes}{Specify the number of genes you'd like to get data for in the top table at the end}
+
+\item{designMatrix}{A model matrix that is the output of the `getDesignMatrix` function}
 }
 \value{
 A molten dataframe containing scaled cpm values

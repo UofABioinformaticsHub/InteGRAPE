@@ -4,17 +4,15 @@
 \alias{getTopGenes}
 \title{Retrieve topTable of differentially expressed genes}
 \usage{
-getTopGenes(DGElist, variable, metadata)
+getTopGenes(DGElist, designMatrix)
 }
 \arguments{
-\item{DGElist}{describe this}
+\item{DGElist}{An object of class `DGElist` containing information on gene counts and samples, typical output from the `limma` package}
 
-\item{variable}{the variable of interest}
-
-\item{metadata}{describe}
+\item{designMartix}{A model matrix containing information on the metadata, an output from the `getDesignMatrix` function}
 }
 \value{
-This tells you what object it returns
+A dataframe containing information from the linear fit, ranking DE genes on significance
 }
 \description{
 Retrieve topTable of differentially expressed genes

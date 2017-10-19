@@ -4,14 +4,12 @@
 \alias{getAllGenes}
 \title{Retrieve topTable of differentially expressed genes}
 \usage{
-getAllGenes(DGElist, variable, metadata)
+getAllGenes(DGElist, designMatrix)
 }
 \arguments{
 \item{DGElist}{describe this}
 
-\item{variable}{the variable of interest}
-
-\item{metadata}{describe}
+\item{designMatrix}{A model matrix that is the output of the `getDesignMatrix` function}
 }
 \value{
 This tells you what object it returns

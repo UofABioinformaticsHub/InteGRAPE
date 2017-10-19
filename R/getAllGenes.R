@@ -7,11 +7,10 @@
 #' @return This tells you what object it returns
 #'
 #' @param DGElist describe this
-#' @param variable the variable of interest
-#' @param metadata describe
+#' @param designMatrix A model matrix that is the output of the `getDesignMatrix` function
 #'
 #' @export
-getAllGenes <- function(DGElist, variable, metadata) {
+getAllGenes <- function(DGElist, designMatrix) {
 
 
   if (!is.character(variable)) {
@@ -22,12 +21,9 @@ getAllGenes <- function(DGElist, variable, metadata) {
     stop("metadata must be a data frame")
   }
 
-  numericVar <- is.numeric(metadata[[variable]])
-  int <- dplyr::if_else(numericVar, 1, 0)
 
 
-  designMatrix <- as.formula(paste("~", paste(int, variable, sep = "+"))) %>%
-    model.matrix(data = metadata)
+
   fitGeneExpr <- limma::voom(DGElist, designMatrix, plot = FALSE) %>%
     limma::lmFit(design = designMatrix) %>%
     limma::eBayes()

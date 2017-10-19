@@ -4,14 +4,12 @@
 \alias{getDEgenes}
 \title{Retrieve differentially expressed genes}
 \usage{
-getDEgenes(DGElist, variable, metadata)
+getDEgenes(DGElist, designMartix)
 }
 \arguments{
 \item{DGElist}{A DGElist output from `limma`}
 
-\item{variable}{The variable of interest}
-
-\item{metadata}{A dataframe with different variables on the x axis and samples on the y axis.}
+\item{designMatrix}{A model matrix that is the output of the `getDesignMatrix` function}
 }
 \value{
 A character vector of differentially expressed genes.

@@ -7,8 +7,7 @@
 #' @return A molten dataframe containing scaled cpm values
 #'
 #' @param DGElist A DGElist containing the count and sampling data
-#' @param variable The selected variable of interest, should be a character string or vector.
-#' @param metadata A dataframe with different variables on the x axis and samples on the y axis.
+#' @param designMatrix A model matrix that is the output of the `getDesignMatrix` function
 #' @param nGenes Specify the number of genes you'd like to get data for in the top table at the end
 #'
 #' @export
@@ -16,7 +15,7 @@
 
 # library(dplyr)
 
-getScaledCPM <- function(DGElist, variable, metadata, nGenes = 30) {
+getScaledCPM <- function(DGElist, designMartix, nGenes = 30) {
 
   require(edgeR)
   require(limma)
@@ -31,16 +30,6 @@ getScaledCPM <- function(DGElist, variable, metadata, nGenes = 30) {
 
   # Fitting models
   ## Voom method
-  ### Create design matrix
-
-  currentVar <- variable
-  numericVar <- is.numeric(metadata[[currentVar]])
-  int <- dplyr::if_else(numericVar, 1, 0)
-
-  designMatrix <- as.formula(paste("~", paste(int, currentVar, sep = "+"))) %>%
-    model.matrix(data = metadata)
-
-
 
   ### Fit gene expression to linear model using lmFit
 

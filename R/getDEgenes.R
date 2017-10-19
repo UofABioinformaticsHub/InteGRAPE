@@ -7,14 +7,13 @@
 #' @return A character vector of differentially expressed genes.
 #'
 #' @param DGElist A DGElist output from `limma`
-#' @param variable The variable of interest
-#' @param metadata A dataframe with different variables on the x axis and samples on the y axis.
+#' @param designMatrix A model matrix that is the output of the `getDesignMatrix` function
 #'
 #' @export
 
 # The input for this
 
-getDEgenes <- function(DGElist, variable, metadata) {
+getDEgenes <- function(DGElist, designMartix) {
 
   require(edgeR)
   require(limma)
@@ -30,12 +29,7 @@ getDEgenes <- function(DGElist, variable, metadata) {
     stop("metadata must be a data frame")
   }
 
-  numericVar <- is.numeric(metadata[[variable]])
-  int <- if_else(numericVar, 1, 0)
 
-
-  designMatrix <- as.formula(paste("~", paste(1, variable, sep = "+"))) %>%
-    model.matrix(data = metadata)
   fitGeneExpr <- voom(DGElist, designMatrix, plot = FALSE) %>%
     lmFit(design = designMatrix) %>%
     eBayes()

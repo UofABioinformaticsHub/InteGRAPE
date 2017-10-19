@@ -15,6 +15,9 @@
 
 
 plotHeatmap <- function(DGElist, variable, metadata, nGenes = 30) {
-  ScaledCPM <- getScaledCPM(DGElist = DGElist, variable = variable, metadata = metadata, nGenes = nGenes)
+
+  designMatrix <- getDesignMatrix(variable, metadata)
+  ScaledCPM <- getScaledCPM(DGElist = DGElist, designMatrix = designMatrix, nGenes = nGenes)
   plottingHeatmap(ScaledCPM = ScaledCPM, variable = variable, metadata = metadata)
+
 }
