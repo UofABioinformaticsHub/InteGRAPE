@@ -12,19 +12,6 @@
 
 plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1") {
 
-  # Fit the data to liner model
-  fit <- edgeR::glmFit(DGElist, designMatrix)
-
-  lrt <- edgeR::glmLRT(fit, coef = colnames(designMatrix)[2])
-
-  # Get the top Tags for the data
-  lrt_top <- edgeR::topTags(lrt, n = nrow(DGElist$counts), adjust.method = "BH", sort.by = "PValue")
-
-  # colnames(lrt_top$table)[1] <- "site"
-  # rownames(lrt_top$table) <- NULL
-
-
-
   # -
   # P-value comparison
   # We now have the top genes and methylatin sites along with their p-values as a result of our previous code
