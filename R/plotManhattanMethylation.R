@@ -66,7 +66,7 @@ plotManhattanMethylation <- function(topMethylation, SeqInfo, Chromosome = "chr1
 
   ## Get y axis ready
 
-  yaxis <- round(abs(seq(from = max(-log10(GeneExprChrGR_df$PValue)), to = min(log10(MethylChrGR_df$PValue)), length.out = 10)), 0)
+  #yaxis <- round(abs(seq(from = max(-log10(GeneExprChrGR_df$PValue)), to = min(log10(MethylChrGR_df$PValue)), length.out = 10)), 0)
 
   methyax <- round(abs(seq(from = max(log10(MethylChrGR_df$PValue)),
                            to = min(log10(MethylChrGR_df$PValue)),
